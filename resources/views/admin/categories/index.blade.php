@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <div class="card">
+    <div class="card py-4" id="add-category">
         <div class="card-header text-uppercase ">Crea nuova categoria</div>
         <div class="card-body">
             <form action="{{route('admin.categories.store')}}" method="POST">
@@ -20,7 +20,7 @@
             </form>
         </div>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped my-4" id="categories-index">
         <thead>
             <tr>
                 <th scope="col">ID</th>
