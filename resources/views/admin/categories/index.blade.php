@@ -3,6 +3,23 @@
 
 @section('content')
 <div class="container">
+    <div class="card">
+        <div class="card-header text-uppercase ">Crea nuova categoria</div>
+        <div class="card-body">
+            <form action="{{route('admin.categories.store')}}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="title">Nome della categoria</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
+                        value="{{old('title')}}">
+                </div>
+                @error('title')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <button class="btn btn-primary" type="submit">Aggiungi</button>
+            </form>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
