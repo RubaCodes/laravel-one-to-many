@@ -38,7 +38,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="px-3">
+                            <a href="{{route('admin.posts.index')}}">Indice Post</a>
+                        </li>
+                        <li class="px-3">
                             <a href="{{route('admin.posts.create')}}">Nuovo Post</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="px-3">
+                            <a href="{{route('admin.categories.index')}}">Indice Categorie</a>
                         </li>
                     </ul>
 
