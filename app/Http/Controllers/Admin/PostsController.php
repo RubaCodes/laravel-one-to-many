@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,6 +20,7 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::all();
+        
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -28,7 +31,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -43,6 +47,7 @@ class PostsController extends Controller
         $request->validate([
             "title" => "string|required|max:255",
             "content" => "string|required|max:65535",
+            'category_id' => 'nullable|exists:categories,id',
             "published" => "sometimes|accepted"
         ]);
         //store
@@ -51,6 +56,7 @@ class PostsController extends Controller
         $newPost->title = $data['title'];
         $newPost->content = $data['content'];
         $newPost->published = isset($data['published']);
+        $newPost->category_id = $data['category_id'];
         $newPost->slug = Str::of($data['title'])->slug('-');
         $newPost->save();
         return redirect()->route('admin.posts.show', $newPost->id);
@@ -77,7 +83,8 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit' , compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.edit' , compact('post','categories'));
     }
 
     /**
@@ -93,13 +100,16 @@ class PostsController extends Controller
         $request->validate([
             "title" => "string|required|max:255",
             "content" => "string|required|max:65535",
+            'category_id' => 'nullable|exists:categories,id',
             "published" => "sometimes|accepted"
+            
         ]);
 
         $data = $request->all();
         $post->title = $data['title'];
         $post->content = $data['content'];
         $post->published = isset($data['published']);
+        $post->category_id = $data['category_id'];
         $post->slug = Str::of($data['title'])->slug('-');
         $post->save();
         return redirect()->route('admin.posts.show', $post->id);
