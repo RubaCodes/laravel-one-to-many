@@ -25,10 +25,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -71,9 +71,9 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -83,9 +83,20 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Category $category)
     {
-        //
+        $request->validate([
+            'name' => "required|string|max:100|unique:categories,name,{$category->id}",
+        ]);
+        $data = $request->all();
+        
+        // aggiornamento
+        $category->name = $data['name'];
+        $category->slug = Str::of($category->name)->slug('-');
+        $category->save();
+
+        // redirect alla pagina con tutte le categorie
+        return redirect()->route('admin.categories.index');
     }
 
     /**
